@@ -32,14 +32,11 @@ export default function Navbar() {
           <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             Jobs
           </Link>
+          <Link href="/companies" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            Companies
+          </Link>
           <Link href="/employers" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             Pricing
-          </Link>
-          <Link href="/advertise" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-            Advertise
-          </Link>
-          <Link href="/subscribe" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-            Alerts
           </Link>
         </nav>
 
@@ -97,6 +94,13 @@ export default function Navbar() {
               Browse Jobs
             </Link>
             <Link
+              href="/companies"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 text-slate-800 dark:text-slate-100"
+            >
+              Companies
+            </Link>
+            <Link
               href="/employers"
               onClick={() => setMobileMenuOpen(false)}
               className="py-1 text-slate-800 dark:text-slate-100"
@@ -110,20 +114,6 @@ export default function Navbar() {
             >
               <Building2 className="h-4 w-4" />
               Employer Login / Dashboard
-            </Link>
-            <Link
-              href="/advertise"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-slate-800 dark:text-slate-100"
-            >
-              Newsletter Sponsorship
-            </Link>
-            <Link
-              href="/subscribe"
-              onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-slate-800 dark:text-slate-100"
-            >
-              Email Alerts
             </Link>
             <Link
               href="/admin"

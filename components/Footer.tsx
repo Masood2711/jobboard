@@ -72,8 +72,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/advertise" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Advertise in Newsletter
+                <Link href="/employers/login" className="hover:text-blue-600 dark:hover:text-blue-400">
+                  Employer Portal & Login
                 </Link>
               </li>
               <li>
