@@ -21,7 +21,7 @@ export async function fetchGreenhouseJobs(boardToken: string): Promise<Normalize
 
   const res = await fetch(url, {
     headers: {
-      "User-Agent": "NicheJobs-Bot/1.0 (+https://nichejobs.work; hello@nichejobs.work)",
+      "User-Agent": "RoleNest-Bot/1.0 (+https://rolenest.co; hello@rolenest.co)",
       Accept: "application/json",
     },
     signal: AbortSignal.timeout(10000), // 10s timeout

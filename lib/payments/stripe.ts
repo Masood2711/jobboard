@@ -29,7 +29,7 @@ export class StripeProvider implements PaymentProvider {
             currency: input.currency.toLowerCase(),
             product_data: {
               name: `${input.plan} Listing - ${input.jobTitle || "Job Listing"}`,
-              description: "30-day listing on NicheJobs with structured data and direct apply link",
+              description: "30-day listing on RoleNest with structured data and direct apply link",
             },
             unit_amount: input.amountCents,
           },

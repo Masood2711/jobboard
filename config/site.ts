@@ -1,28 +1,27 @@
 // config/site.ts
 export const SITE = {
-  name: "NicheJobs",
-  domain: "nichejobs.work",
+  name: "RoleNest",
+  domain: "rolenest.co",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  description: "The premier board for verified jobs, careers, and opportunities worldwide. Connect top talent with leading companies.",
-  supportEmail: "hello@nichejobs.work",
-  adminEmails: (process.env.ADMIN_EMAILS || "owner@example.com,admin@nichejobs.work")
+  description: "The home for tech and remote talent. Connect with high-growth companies hiring software engineers, product managers, designers, and digital professionals worldwide.",
+  supportEmail: "hello@rolenest.co",
+  adminEmails: (process.env.ADMIN_EMAILS || "owner@example.com,admin@rolenest.co")
     .split(",")
     .map((e) => e.trim().toLowerCase()),
   currencySymbol: "$",
-  logoText: "NicheJobs",
-  badgeText: "Jobs & Careers",
+  logoText: "RoleNest",
+  badgeText: "Tech & Remote Careers",
   navLinks: [
     { label: "Jobs", href: "/" },
-    { label: "Post a Job", href: "/post-a-job" },
     { label: "Companies", href: "/companies" },
-    { label: "Subscribe", href: "/subscribe" }
+    { label: "Pricing", href: "/employers" },
+    { label: "Post a Job", href: "/post-a-job" },
   ],
   footerLinks: [
     { label: "About", href: "/about" },
     { label: "Companies", href: "/companies" },
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
-    { label: "Takedown Request", href: "/takedown" },
-    { label: "Contact", href: "/contact" }
-  ]
+    { label: "Contact", href: "/contact" },
+  ],
 } as const;

@@ -38,9 +38,9 @@ export async function GET(
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // Append utm_source=nichejobs as per Section 6 Flow A
+  // Append utm_source=rolenest as per tracking policy
   const destination = new URL(targetUrl);
-  destination.searchParams.set("utm_source", "nichejobs");
+  destination.searchParams.set("utm_source", "rolenest");
 
   return NextResponse.redirect(destination.toString(), { status: 302 });
 }

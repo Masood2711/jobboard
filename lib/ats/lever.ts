@@ -7,7 +7,7 @@ export async function fetchLeverJobs(company: string): Promise<NormalizedAtsJob[
 
   const res = await fetch(url, {
     headers: {
-      "User-Agent": "NicheJobs-Bot/1.0 (+https://nichejobs.work; hello@nichejobs.work)",
+      "User-Agent": "RoleNest-Bot/1.0 (+https://rolenest.co; hello@rolenest.co)",
       Accept: "application/json",
     },
     signal: AbortSignal.timeout(10000),

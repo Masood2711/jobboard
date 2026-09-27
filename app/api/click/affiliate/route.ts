@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  let targetUrl = "https://nichejobs.work";
+  let targetUrl = "https://rolenest.co";
 
   try {
     const offer = await prisma.affiliateOffer.findUnique({

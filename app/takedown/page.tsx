@@ -52,7 +52,7 @@ export default function TakedownPage() {
               <input
                 type="url"
                 required
-                placeholder="https://nichejobs.work/jobs/..."
+                placeholder="https://rolenest.co/jobs/..."
                 className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-900 focus:border-blue-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
             </div>
