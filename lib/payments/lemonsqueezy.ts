@@ -23,7 +23,33 @@ export class LemonSqueezyProvider implements PaymentProvider {
       };
     }
 
-    const payload = {
+    // Check for explicit variant ID or auto-discover from store
+    let variantId =
+      input.plan === "FEATURED"
+        ? process.env.LEMONSQUEEZY_VARIANT_ID_FEATURED || process.env.LEMONSQUEEZY_VARIANT_ID
+        : process.env.LEMONSQUEEZY_VARIANT_ID_STANDARD || process.env.LEMONSQUEEZY_VARIANT_ID;
+
+    if (!variantId) {
+      try {
+        const variantsRes = await fetch(
+          `https://api.lemonsqueezy.com/v1/variants?filter[store_id]=${this.storeId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.apiKey}`,
+              Accept: "application/vnd.api+json",
+            },
+          }
+        );
+        if (variantsRes.ok) {
+          const variantsJson = await variantsRes.json();
+          variantId = variantsJson.data?.[0]?.id;
+        }
+      } catch (err) {
+        console.warn("Could not auto-fetch Lemon Squeezy variant:", err);
+      }
+    }
+
+    const payload: any = {
       data: {
         type: "checkouts",
         attributes: {
@@ -48,6 +74,16 @@ export class LemonSqueezyProvider implements PaymentProvider {
               id: this.storeId,
             },
           },
+          ...(variantId
+            ? {
+                variant: {
+                  data: {
+                    type: "variants",
+                    id: String(variantId),
+                  },
+                },
+              }
+            : {}),
         },
       },
     };
