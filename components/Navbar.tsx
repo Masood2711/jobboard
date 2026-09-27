@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Shield, Menu, X, PlusCircle } from "lucide-react";
+import { Shield, Menu, X, PlusCircle, Building2 } from "lucide-react";
 import { SITE } from "@/config/site";
 
 export default function Navbar() {
@@ -33,7 +33,7 @@ export default function Navbar() {
             Jobs
           </Link>
           <Link href="/employers" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-            Employers
+            Pricing
           </Link>
           <Link href="/advertise" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             Advertise
@@ -43,8 +43,15 @@ export default function Navbar() {
           </Link>
         </nav>
 
-        {/* Action Button */}
-        <div className="hidden sm:flex items-center gap-3">
+        {/* Action Buttons */}
+        <div className="hidden sm:flex items-center gap-2.5">
+          <Link
+            href="/employers/login"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 transition-colors shadow-sm"
+          >
+            <Building2 className="h-3.5 w-3.5 text-slate-400" />
+            Employer Login
+          </Link>
           <Link
             href="/post-a-job"
             className="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 active:scale-95 transition-all"
@@ -56,6 +63,12 @@ export default function Navbar() {
 
         {/* Mobile menu toggle */}
         <div className="flex sm:hidden items-center gap-2">
+          <Link
+            href="/employers/login"
+            className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200"
+          >
+            Login
+          </Link>
           <Link
             href="/post-a-job"
             className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white"
@@ -89,6 +102,14 @@ export default function Navbar() {
               className="py-1 text-slate-800 dark:text-slate-100"
             >
               Pricing & Employers
+            </Link>
+            <Link
+              href="/employers/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-1 font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1.5"
+            >
+              <Building2 className="h-4 w-4" />
+              Employer Login / Dashboard
             </Link>
             <Link
               href="/advertise"

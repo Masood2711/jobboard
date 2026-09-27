@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { PRICING } from "@/config/pricing";
 import { SITE } from "@/config/site";
-import { CheckCircle2, Sparkles, PlusCircle, HelpCircle } from "lucide-react";
+import { CheckCircle2, Sparkles, PlusCircle, HelpCircle, Building2 } from "lucide-react";
 
 const FAQS = [
   {
@@ -49,6 +49,17 @@ export default function EmployersPage() {
         <p className="mt-3 text-base text-slate-600 dark:text-slate-300">
           Skip generic job boards with thousands of unqualified resumes. Connect directly with vetted software engineers, designers, product managers, AI practitioners, and tech professionals worldwide.
         </p>
+
+        {/* Employer Portal Access Callout */}
+        <div className="mt-6 flex items-center justify-center">
+          <Link
+            href="/employers/login"
+            className="inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-blue-50/80 px-4 py-2.5 text-xs font-semibold text-blue-700 hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 dark:hover:bg-blue-900/60 transition-colors shadow-xs"
+          >
+            <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <span>Already posted or have a membership? <strong>Log in to Employer Dashboard →</strong></span>
+          </Link>
+        </div>
       </div>
 
       {/* Pricing Cards */}

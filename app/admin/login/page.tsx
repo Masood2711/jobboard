@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Shield, Mail, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { Shield, Mail, CheckCircle2, AlertCircle, ArrowRight, Building2 } from "lucide-react";
 import Link from "next/link";
 import { SITE } from "@/config/site";
 
@@ -118,7 +118,22 @@ export default function AdminLoginPage() {
             </button>
           </form>
         )}
+
+        {/* Employer Portal Callout */}
+        <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-2">
+            Are you an employer looking to check posting status or candidate clicks?
+          </p>
+          <Link
+            href="/employers/login"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-slate-50 px-3 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50 dark:bg-slate-800 dark:text-blue-400 dark:hover:bg-slate-700/50 transition-colors"
+          >
+            <Building2 className="h-3.5 w-3.5" />
+            Go to Employer Login & Status Dashboard →
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
+

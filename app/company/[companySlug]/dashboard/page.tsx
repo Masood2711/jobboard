@@ -16,7 +16,9 @@ import {
   CreditCard,
   Clock,
   ArrowRight,
+  UserCheck,
 } from "lucide-react";
+import { getEmployerSession } from "@/lib/auth";
 
 interface CompanyDashboardProps {
   params: Promise<{
@@ -26,6 +28,7 @@ interface CompanyDashboardProps {
 
 export default async function CompanyDashboardPage({ params }: CompanyDashboardProps) {
   const { companySlug } = await params;
+  const employerSession = await getEmployerSession();
 
   let company: any = null;
   let jobs: any[] = [];
@@ -119,8 +122,22 @@ export default async function CompanyDashboardPage({ params }: CompanyDashboardP
               </div>
             </div>
 
-            {/* Quick Action Button */}
-            <div className="flex items-center gap-2">
+            {/* Quick Action Button & Employer Status */}
+            <div className="flex items-center gap-2.5">
+              {employerSession?.email ? (
+                <div className="hidden sm:flex items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+                  <UserCheck className="h-3.5 w-3.5 text-emerald-600" />
+                  <span>Logged in: <strong>{employerSession.email}</strong></span>
+                </div>
+              ) : (
+                <Link
+                  href="/employers/login"
+                  className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 hover:border-blue-500 hover:text-blue-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 transition-colors shadow-xs"
+                >
+                  <Building2 className="h-3.5 w-3.5 text-slate-400" />
+                  Employer Login
+                </Link>
+              )}
               <Link
                 href={`/post-a-job`}
                 className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition-all"

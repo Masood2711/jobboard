@@ -156,6 +156,12 @@ export default function PostJobPage() {
         <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           Reach thousands of qualified tech, remote, and digital professionals in minutes. No mandatory account setup required.
         </p>
+        <p className="mt-2 text-xs text-slate-500">
+          Already posted jobs or have a monthly membership?{" "}
+          <Link href="/employers/login" className="text-blue-600 hover:underline font-semibold dark:text-blue-400">
+            Sign in to your Employer Dashboard →
+          </Link>
+        </p>
 
         {/* Stepper indicators */}
         <div className="mt-6 flex items-center justify-center gap-2 sm:gap-4 text-xs font-semibold">
