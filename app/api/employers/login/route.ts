@@ -4,17 +4,6 @@ import prisma from "@/lib/db";
 import { SITE } from "@/config/site";
 import { createEmployerSessionToken, EMPLOYER_SESSION_COOKIE } from "@/lib/auth";
 
-const GENERIC_EMAIL_DOMAINS = [
-  "gmail.com",
-  "yahoo.com",
-  "hotmail.com",
-  "outlook.com",
-  "icloud.com",
-  "proton.me",
-  "protonmail.com",
-  "aol.com",
-];
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -22,18 +11,18 @@ export async function POST(request: Request) {
 
     if (!email || !email.includes("@")) {
       return NextResponse.json(
-        { error: "Please enter a valid work email address" },
+        { error: "Please enter a valid email address." },
         { status: 400 }
       );
     }
 
-    const domain = email.split("@")[1] || "";
+    const [username, domain] = email.split("@");
     let company: any = null;
 
     try {
-      // 1. Look for existing job posted with this employerEmail
+      // 1. Look for existing jobs posted with this employer email (exact match)
       const existingJob = await prisma.job.findFirst({
-        where: { employerEmail: email },
+        where: { employerEmail: { equals: email, mode: "insensitive" } },
         include: { company: true },
         orderBy: { createdAt: "desc" },
       });
@@ -42,8 +31,8 @@ export async function POST(request: Request) {
         company = existingJob.company;
       }
 
-      // 2. If not found via jobs, look up company by domain
-      if (!company && domain && !GENERIC_EMAIL_DOMAINS.includes(domain)) {
+      // 2. If not found via jobs, look up company by domain or website match
+      if (!company && domain) {
         company = await prisma.company.findFirst({
           where: {
             OR: [
@@ -57,7 +46,7 @@ export async function POST(request: Request) {
       // 3. If not found, look up via company claim
       if (!company) {
         const claim = await prisma.companyClaim.findFirst({
-          where: { email },
+          where: { email: { equals: email, mode: "insensitive" } },
           include: { company: true },
         });
         if (claim?.company) {
@@ -65,16 +54,43 @@ export async function POST(request: Request) {
         }
       }
 
-      // 4. If still not found, automatically register/provision company profile for this employer
+      // 4. If still not found, automatically provision a company workspace for this employer
+      // Supports ALL domains: corporate domains, custom domains, startups, Gmail, Yahoo, Outlook, etc.
       if (!company) {
-        const rawName = !GENERIC_EMAIL_DOMAINS.includes(domain) && domain.includes(".")
-          ? domain.split(".")[0]
-          : email.split("@")[0];
+        const isCommonProvider = [
+          "gmail.com",
+          "yahoo.com",
+          "hotmail.com",
+          "outlook.com",
+          "icloud.com",
+          "proton.me",
+          "protonmail.com",
+          "aol.com",
+          "live.com",
+          "msn.com",
+        ].includes(domain);
 
-        const slug = rawName.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-");
+        // Derive friendly company name and slug
+        let rawName = "";
+        if (!isCommonProvider && domain && domain.includes(".")) {
+          // e.g. "acmecorp.com" -> "acmecorp"
+          rawName = domain.split(".")[0];
+        } else {
+          // e.g. "alex.recruiting@gmail.com" -> "alex recruiting"
+          rawName = username.replace(/[._+-]+/g, " ");
+        }
+
+        const slug = rawName
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")
+          .replace(/-+/g, "-")
+          .replace(/^-|-$/g, "") || "employer";
+
         const formattedName = rawName
-          .replace(/[-_]/g, " ")
-          .replace(/\b\w/g, (c: string) => c.toUpperCase());
+          .split(" ")
+          .filter(Boolean)
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ") || "Employer Workspace";
 
         company = await prisma.company.upsert({
           where: { slug },
@@ -90,14 +106,12 @@ export async function POST(request: Request) {
       }
     } catch (dbErr) {
       console.warn("Database lookup fallback during employer login:", dbErr);
-      // Graceful fallback for environments with pending migrations
-      const rawName = domain && !GENERIC_EMAIL_DOMAINS.includes(domain)
-        ? domain.split(".")[0]
-        : email.split("@")[0];
-      const slug = rawName.toLowerCase().replace(/[^a-z0-9]/g, "-");
+      // Graceful fallback for local dev or offline database
+      const fallbackName = domain?.includes(".") ? domain.split(".")[0] : username;
+      const slug = fallbackName.toLowerCase().replace(/[^a-z0-9]/g, "-") || "employer";
       company = {
         slug,
-        name: rawName.replace(/\b\w/g, (c: string) => c.toUpperCase()),
+        name: fallbackName.charAt(0).toUpperCase() + fallbackName.slice(1),
       };
     }
 

@@ -112,7 +112,7 @@ export default function EmployerLoginPage() {
                   htmlFor="email"
                   className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5"
                 >
-                  Work Email Address
+                  Your Email Address (All Domains Accepted)
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -122,12 +122,12 @@ export default function EmployerLoginPage() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="alex@yourcompany.com"
+                    placeholder="alex@acmecorp.com or founder@gmail.com"
                     className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-3 text-sm text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-white"
                   />
                 </div>
                 <p className="mt-1.5 text-[11px] text-slate-400">
-                  Use the email address you used when posting jobs or purchasing your plan.
+                  All email domains are welcome — company domains, custom domains, Gmail, Outlook, Yahoo, etc.
                 </p>
               </div>
 

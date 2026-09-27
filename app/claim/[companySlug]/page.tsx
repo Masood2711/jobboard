@@ -88,7 +88,7 @@ export default function ClaimCompanyPage() {
                 />
               </div>
               <p className="mt-1.5 text-[11px] text-slate-400">
-                *Must match the verified company web domain. Free email providers (Gmail, Yahoo) are not accepted for company verification.
+                All email domains are accepted. We will send a verification link directly to your inbox.
               </p>
             </div>
 
