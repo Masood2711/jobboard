@@ -1,0 +1,325 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum JobOrigin {
+  DIRECT
+  ATS
+  FEED
+}
+
+enum AtsProvider {
+  GREENHOUSE
+  LEVER
+  ASHBY
+}
+
+enum JobStatus {
+  PENDING_PAYMENT
+  PENDING_REVIEW
+  LIVE
+  EXPIRED
+  REJECTED
+  REMOVED
+}
+
+enum LocationType {
+  REMOTE
+  HYBRID
+  ONSITE
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum Plan {
+  STANDARD
+  FEATURED
+  FEATURE_UPGRADE
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum SubStatus {
+  PENDING
+  CONFIRMED
+  UNSUBSCRIBED
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+}
+
+enum IssueStatus {
+  DRAFT
+  SENT
+}
+
+enum SponsorStatus {
+  INQUIRY
+  PAID
+  SCHEDULED
+  SENT
+  CANCELLED
+}
+
+model Company {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  name        String
+  websiteUrl  String
+  domain      String         // e.g. northwindsecurity.com (used for claim check)
+  logoUrl     String?
+  description String?
+  blocklisted Boolean        @default(false)
+  createdAt   DateTime       @default(now())
+  jobs        Job[]
+  sources     AtsSource[]
+  claims      CompanyClaim[]
+}
+
+model AtsSource {
+  id          String      @id @default(cuid())
+  companyId   String
+  company     Company     @relation(fields: [companyId], references: [id])
+  provider    AtsProvider
+  boardToken  String      // greenhouse token / lever company / ashby boardName
+  active      Boolean     @default(true)
+  lastSyncAt  DateTime?
+  failedRuns  Int         @default(0)
+  jobs        Job[]
+  logs        SyncLog[]
+
+  @@unique([provider, boardToken])
+}
+
+model Job {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  origin           JobOrigin
+  status           JobStatus
+  companyId        String
+  company          Company        @relation(fields: [companyId], references: [id])
+  title            String
+  descriptionHtml  String
+  category         String
+  seniority        String?
+  employmentType   EmploymentType
+  locationType     LocationType
+  eligibleRegions  String[]       // ["WORLDWIDE"] or country codes / regions
+  locationText     String?        // for hybrid/on-site
+  salaryMin        Int?
+  salaryMax        Int?
+  salaryCurrency   String?
+  salaryPeriod     String?        // YEAR | MONTH | HOUR
+  applyUrl         String?
+  applyEmail       String?
+
+  // ATS import fields
+  atsSourceId      String?
+  atsSource        AtsSource?     @relation(fields: [atsSourceId], references: [id])
+  sourceJobId      String?
+  contentHash      String?
+  lastSeenAt       DateTime?
+  missedRuns       Int            @default(0)
+
+  // Partner feed fields (origin = FEED)
+  feedPartnerId    String?
+  feedPartner      FeedPartner?   @relation(fields: [feedPartnerId], references: [id])
+
+  // Direct posting fields
+  employerEmail    String?
+  editToken        String?        @unique
+  approvedBefore   Boolean        @default(false)
+
+  // Lifecycle and featuring
+  isFeatured       Boolean        @default(false)
+  featuredUntil    DateTime?
+  publishedAt      DateTime?
+  expiresAt        DateTime?
+  indexNotifiedAt  DateTime?      // last time Google Indexing API was notified
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  orders           Order[]
+  clicks           JobClick[]
+  dailyStats       JobDailyStat[]
+
+  @@unique([atsSourceId, sourceJobId])
+  @@unique([feedPartnerId, sourceJobId])
+  @@index([status, isFeatured, publishedAt])
+  @@index([companyId])
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  jobId             String
+  job               Job         @relation(fields: [jobId], references: [id])
+  plan              Plan
+  provider          String      // "stripe" | "lemonsqueezy"
+  providerSessionId String?     @unique
+  amountCents       Int
+  currency          String      @default("USD")
+  feeCents          Int?
+  status            OrderStatus @default(PENDING)
+  payerEmail        String
+  receiptUrl        String?
+  createdAt         DateTime    @default(now())
+  paidAt            DateTime?
+}
+
+model WebhookEvent {
+  id         String   @id @default(cuid())
+  provider   String
+  eventId    String
+  receivedAt DateTime @default(now())
+
+  @@unique([provider, eventId])
+}
+
+model JobClick {
+  id       String   @id @default(cuid())
+  jobId    String
+  job      Job      @relation(fields: [jobId], references: [id])
+  at       DateTime @default(now())
+  referrer String?
+
+  @@index([jobId, at])
+}
+
+model JobDailyStat {
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
+  date        DateTime @db.Date
+  views       Int      @default(0)
+  applyClicks Int      @default(0)
+
+  @@id([jobId, date])
+}
+
+model CompanyClaim {
+  id         String    @id @default(cuid())
+  companyId  String
+  company    Company   @relation(fields: [companyId], references: [id])
+  email      String
+  tokenHash  String
+  expiresAt  DateTime
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model Subscriber {
+  id               String     @id @default(cuid())
+  email            String     @unique
+  status           SubStatus  @default(PENDING)
+  frequency        Frequency  @default(WEEKLY)
+  categories       String[]
+  regions          String[]
+  confirmToken     String     @unique
+  unsubscribeToken String     @unique
+  createdAt        DateTime   @default(now())
+  confirmedAt      DateTime?
+}
+
+model NewsletterIssue {
+  id        String      @id @default(cuid())
+  subject   String
+  bodyHtml  String
+  status    IssueStatus @default(DRAFT)
+  createdAt DateTime    @default(now())
+  sentAt    DateTime?
+}
+
+model SyncLog {
+  id         String    @id @default(cuid())
+  sourceId   String
+  source     AtsSource @relation(fields: [sourceId], references: [id])
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  seen       Int       @default(0)
+  added      Int       @default(0)
+  updated    Int       @default(0)
+  expired    Int       @default(0)
+  error      String?
+}
+
+model FeedPartner {
+  id          String    @id @default(cuid())
+  name        String    @unique // e.g. "JobNet"
+  feedUrl     String
+  active      Boolean   @default(true)
+  maxJobs     Int       @default(500)
+  estCpcCents Int?      // estimate for admin reports only
+  lastSyncAt  DateTime?
+  jobs        Job[]
+}
+
+model AffiliateOffer {
+  id         String           @id @default(cuid())
+  name       String
+  url        String           // affiliate link
+  category   String           // RESUME | COURSE | CERTIFICATION | TOOL
+  headline   String
+  body       String
+  placements String[]         // JOB_PAGE | ALERT_EMAIL | NEWSLETTER
+  active     Boolean          @default(true)
+  clicks     AffiliateClick[]
+  createdAt  DateTime         @default(now())
+}
+
+model AffiliateClick {
+  id        String         @id @default(cuid())
+  offerId   String
+  offer     AffiliateOffer @relation(fields: [offerId], references: [id])
+  placement String
+  at        DateTime       @default(now())
+
+  @@index([offerId, at])
+}
+
+model SponsorBooking {
+  id         String        @id @default(cuid())
+  company    String
+  email      String
+  linkUrl    String
+  headline   String
+  bodyText   String
+  logoUrl    String?
+  priceCents Int
+  status     SponsorStatus @default(INQUIRY)
+  issueId    String?
+  createdAt  DateTime      @default(now())
+}
+
+model Takedown {
+  id             String   @id @default(cuid())
+  url            String
+  requesterEmail String
+  reason         String
+  status         String   @default("OPEN") // OPEN | DONE | REJECTED
+  createdAt      DateTime @default(now())
+}
+
+model AdminToken {
+  id        String   @id @default(cuid())
+  email     String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}

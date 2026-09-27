@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --border-subtle: #e2e8f0;
+    --border-hover: #cbd5e1;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --featured-bg: #fffbeb;
+    --featured-border: #fcd34d;
+    --featured-badge-bg: #fef3c7;
+    --featured-badge-text: #92400e;
+    --direct-badge-bg: #ecfdf5;
+    --direct-badge-text: #065f46;
+  }
+
+  .dark {
+    --bg-main: #090d16;
+    --bg-card: #0f172a;
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-subtle: #1e293b;
+    --border-hover: #334155;
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --featured-bg: #1c1917;
+    --featured-border: #b45309;
+    --featured-badge-bg: #451a03;
+    --featured-badge-text: #fde68a;
+    --direct-badge-bg: #064e3b;
+    --direct-badge-text: #a7f3d0;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom utility styles for dense professional readability */
+.job-card-hover {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.job-card-hover:hover {
+  transform: translateY(-1px);
 }

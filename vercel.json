@@ -1,0 +1,20 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-ats",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/sync-feeds",
+      "schedule": "30 2 * * *"
+    },
+    {
+      "path": "/api/cron/lifecycle",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/newsletter?frequency=WEEKLY",
+      "schedule": "0 9 * * 2"
+    }
+  ]
+}
