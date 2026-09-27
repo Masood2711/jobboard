@@ -9,22 +9,25 @@ export default function Footer() {
     <footer className="border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900/50 mt-20 text-xs text-slate-500 dark:text-slate-400">
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          {/* Brand Info & Categories */}
           <div className="flex flex-col gap-3 md:col-span-2">
             <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5 text-blue-600" />
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-600 text-white shadow-xs">
+                <Shield className="h-4 w-4" />
+              </div>
               <span className="text-base font-bold text-slate-900 dark:text-white">
                 {SITE.name}
               </span>
             </div>
             <p className="max-w-md text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-              The dedicated job board for verified tech, AI, remote, and digital professionals. Direct company career feeds, verified remote roles, and transparent compensation data.
+              The modern job board connecting verified tech, remote, and digital professionals with hiring teams worldwide. Transparent salaries, verified roles, and direct company applications.
             </p>
             <div className="flex flex-wrap gap-2 pt-2">
               {NICHE.categories.map((cat) => (
                 <Link
                   key={cat}
                   href={`/?category=${encodeURIComponent(cat)}`}
-                  className="rounded bg-slate-100 px-2 py-0.5 text-[11px] text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+                  className="rounded-lg bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 transition-colors"
                 >
                   {cat}
                 </Link>
@@ -32,62 +35,59 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Job Seekers */}
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">For Candidates</h4>
-            <ul className="space-y-2">
+            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Job Seekers</h4>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400">
+                <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Browse All Jobs
                 </Link>
               </li>
               <li>
-                <Link href="/subscribe" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Get Job Alerts (Free)
-                </Link>
-              </li>
-              <li>
-                <Link href="/companies" className="hover:text-blue-600 dark:hover:text-blue-400">
+                <Link href="/companies" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Company Directory
                 </Link>
               </li>
               <li>
-                <Link href="/sitemap.xml" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Sitemap
+                <Link href="/about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Contact Support
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Employers */}
           <div>
-            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Employers & Trust</h4>
-            <ul className="space-y-2">
+            <h4 className="font-semibold text-slate-900 dark:text-white mb-3">Employers</h4>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/post-a-job" className="hover:text-blue-600 dark:hover:text-blue-400">
+                <Link href="/post-a-job" className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 transition-colors">
                   Post a Job ($149)
                 </Link>
               </li>
               <li>
-                <Link href="/employers" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Pricing & FAQ
+                <Link href="/employers" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Pricing & Plans
                 </Link>
               </li>
               <li>
-                <Link href="/employers/login" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Employer Portal & Login
+                <Link href="/employers/login" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                  Employer Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/takedown" className="hover:text-blue-600 dark:hover:text-blue-400">
-                  Takedown / Removal Form
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400">
+                <Link href="/terms" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400">
+                <Link href="/privacy" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   Privacy Policy
                 </Link>
               </li>
@@ -95,11 +95,12 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-slate-100 pt-6 dark:border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved. Vetted jobs directly from employer systems.</p>
+        {/* Bottom Bar */}
+        <div className="mt-10 border-t border-slate-100 pt-6 dark:border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
           <div className="flex items-center gap-4 text-xs">
-            <Link href="/admin" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-              Admin Access
+            <Link href="/admin/login" className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+              Admin Portal
             </Link>
           </div>
         </div>

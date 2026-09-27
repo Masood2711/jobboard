@@ -102,10 +102,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <Briefcase className="h-6 w-6" />
             </div>
             <h3 className="mt-4 text-base font-semibold text-slate-900 dark:text-white">
-              Nothing matches your filters yet
+              No positions match your filters
             </h3>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-              Try broadening your search query or clearing your filter criteria. Or subscribe below to receive an email alert as soon as a matching role is posted!
+              Try adjusting your search terms or clearing your filters to see more active openings.
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <Link
@@ -115,10 +115,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                 Clear all filters
               </Link>
               <Link
-                href="/subscribe"
+                href="/companies"
                 className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
               >
-                Create Job Alert
+                Browse Companies
               </Link>
             </div>
           </div>
@@ -164,38 +164,31 @@ export default async function HomePage({ searchParams }: HomePageProps) {
         )}
       </section>
 
-      {/* Email Alert Banner */}
-      <section className="mt-14 rounded-2xl border border-blue-200/80 bg-blue-50/50 p-6 sm:p-8 dark:border-blue-900/60 dark:bg-blue-950/20">
+      {/* Employer Hiring CTA Banner */}
+      <section className="mt-14 rounded-2xl border border-blue-200/80 bg-gradient-to-r from-blue-50/80 to-indigo-50/40 p-6 sm:p-8 dark:border-blue-900/60 dark:from-slate-900 dark:to-slate-900/50">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-start gap-4">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
-              <Mail className="h-6 w-6" />
+              <Briefcase className="h-6 w-6" />
             </div>
             <div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                Get new verified jobs in your inbox
+                Hiring qualified tech or remote talent?
               </h3>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">
-                Weekly digest of the best curated job opportunities. No spam, one-click unsubscribe.
+                Reach thousands of verified software engineers, product managers, designers, and tech professionals.
               </p>
             </div>
           </div>
 
-          <form action="/subscribe" method="GET" className="flex w-full sm:w-auto gap-2">
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="you@company.com"
-              className="w-full sm:w-64 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs text-slate-900 shadow-sm focus:border-blue-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
-            />
-            <button
-              type="submit"
-              className="shrink-0 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <Link
+              href="/post-a-job"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-5 py-3 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 active:scale-95 transition-all"
             >
-              Subscribe
-            </button>
-          </form>
+              Post a Job ($149)
+            </Link>
+          </div>
         </div>
       </section>
     </div>

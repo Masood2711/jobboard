@@ -164,14 +164,14 @@ export default async function RegionPage({ params }: RegionPageProps) {
               No active jobs in {reg.label} right now
             </h3>
             <p className="mt-1 text-xs text-slate-500">
-              Subscribe to get alerts the moment new roles for {reg.label} are published.
+              Check back soon or explore other locations to discover verified tech roles.
             </p>
             <div className="mt-4">
               <Link
-                href="/subscribe"
+                href="/"
                 className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
               >
-                Get Job Alerts
+                Browse All Openings
               </Link>
             </div>
           </div>

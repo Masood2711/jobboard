@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Mail,
   Share2,
+  ArrowRight,
 } from "lucide-react";
 
 interface JobDetailPageProps {
@@ -317,10 +318,10 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               About {job.company.name}
             </h3>
             <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-              {job.company.description || "Leading innovator in autonomous security solutions."}
+              {job.company.description || `Verified hiring employer on ${SITE.name}.`}
             </p>
 
-            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
+            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-2">
               <a
                 href={job.company.websiteUrl}
                 target="_blank"
@@ -330,65 +331,35 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                 Visit company website
                 <ExternalLink className="h-3 w-3" />
               </a>
+              <Link
+                href={`/companies/${job.company.slug}`}
+                className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-900 dark:hover:text-slate-200"
+              >
+                View all openings at {job.company.name} →
+              </Link>
             </div>
           </div>
 
-          {/* Candidate Affiliate Offer (Flow L & Monetization) */}
-          <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-5 dark:border-blue-900 dark:bg-blue-950/30 text-xs">
+          {/* Employer Hiring CTA Card */}
+          <div className="rounded-2xl border border-blue-200/80 bg-gradient-to-br from-blue-50/70 to-indigo-50/30 p-6 shadow-sm dark:border-blue-900/60 dark:from-slate-900 dark:to-slate-900/40">
             <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 block mb-1">
-              Sponsored Resource
+              Hiring For Your Team?
             </span>
             <h4 className="font-bold text-slate-900 dark:text-white text-sm">
-              Applying for this role?
+              Reach Top Tech Talent
             </h4>
-            <p className="mt-1.5 text-slate-600 dark:text-slate-300 leading-relaxed">
-              Scan your CV against ATS filters with AI and get instant feedback to score 3x more recruiter callbacks.
+            <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Post your open role on {SITE.name} to connect with vetted candidates worldwide.
             </p>
-            <a
-              href="/api/click/affiliate?offerId=aff_1&placement=JOB_PAGE"
-              target="_blank"
-              rel="sponsored nofollow"
-              className="mt-3 inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-blue-700 transition-colors shadow-sm"
-            >
-              Optimize Resume For Free
-              <ExternalLink className="h-3 w-3" />
-            </a>
-            <p className="mt-2 text-[10px] text-slate-400">
-              *We may earn a commission if you purchase through this partner link.
-            </p>
-          </div>
-
-          {/* Quick email alert box */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2 mb-2">
-              <Mail className="h-4 w-4 text-blue-600" />
-              <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                Get jobs like this by email
-              </h4>
-            </div>
-            <p className="text-[11px] text-slate-500 mb-3">
-              Never miss a {job.category} opening. Unsubscribe anytime in one click.
-            </p>
-            <form action="/subscribe" method="GET" className="space-y-2">
-              <input
-                type="hidden"
-                name="category"
-                value={job.category}
-              />
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="your.email@work.com"
-                className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-900 focus:border-blue-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-              />
-              <button
-                type="submit"
-                className="w-full rounded-lg bg-slate-900 py-2 text-xs font-semibold text-white hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-700"
+            <div className="mt-4">
+              <Link
+                href="/post-a-job"
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors w-full"
               >
-                Send Me Similar Roles
-              </button>
-            </form>
+                Post a Job ($149)
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
